@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +12,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PaymentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private EntityManagerInterface $entityManagerInterface)
     {
         parent::__construct($registry, Payment::class);
+    }
+
+    public function save(Payment $payment)
+    {
+        $this->getEntityManager()->persist($payment);
+        $this->getEntityManager()->flush();
+        return $payment;
+    }
+
+    public function update(Payment $payment)
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Payment $payment)
+    {
+        $this->getEntityManager()->remove($payment);
+        $this->getEntityManager()->flush();
     }
 
     //    /**

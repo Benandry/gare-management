@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Trips;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,11 +12,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TripsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private EntityManagerInterface $entityManagerInterface)
     {
         parent::__construct($registry, Trips::class);
     }
+    public function save(Trips $trips)
+    {
+        $this->getEntityManager()->persist($trips);
+        $this->getEntityManager()->flush();
+        return $trips;
+    }
 
+    public function update(Trips $trips)
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Trips $trips)
+    {
+        $this->getEntityManager()->remove($trips);
+        $this->getEntityManager()->flush();
+    }
     //    /**
     //     * @return Trips[] Returns an array of Trips objects
     //     */

@@ -26,7 +26,7 @@ class Bookings
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?trips $trip_id = null;
+    private ?Trips $trip_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'booking_id')]
     private ?Payment $payment = null;
@@ -72,12 +72,12 @@ class Bookings
         return $this;
     }
 
-    public function getTripId(): ?trips
+    public function getTripId(): ?Trips
     {
         return $this->trip_id;
     }
 
-    public function setTripId(?trips $trip_id): static
+    public function setTripId(?Trips $trip_id): static
     {
         $this->trip_id = $trip_id;
 
