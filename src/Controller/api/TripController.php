@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/api/trip")]
 class TripController extends AbstractController
 {
-    #[Route("/index",name: "app_api_trip_index",methods: ["GET","POST"]) ]
+    #[Route("/index", name: "app_api_trip_index", methods: ["GET", "POST"])]
     public function index(): Response
     {
         return $this->json([
             "message" => "Api trips gare management.",
-        ])
+        ]);
     }
 }
