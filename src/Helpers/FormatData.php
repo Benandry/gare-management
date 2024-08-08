@@ -6,18 +6,29 @@ use App\Entity\Bookings;
 use App\Entity\Payment;
 use App\Entity\Traveler;
 use App\Entity\Trips;
+use App\Repository\TravelerRepository;
+use App\Repository\TripsRepository;
+use DateTime;
 
 class FormattedData
 {
-
-    public function formattedBookingData(array $result, Bookings $booking = null): Bookings
+    public function __construct(private TravelerRepository $travelerRepository, private TripsRepository $tripsRepository)
     {
-        if (!$booking) {
-            $booking = new Bookings();
-        }
-        return $booking->setTravelerId($result['traveler_id'])
-            ->setTripId($result['trip_id'])
-            ->setBookingDate($result['booking_date'])
+    }
+
+    /**
+     * formatted data for booking
+     * @param array $result
+     * @param \App\Entity\Bookings $booking
+     * @return \App\Entity\Bookings
+     */
+    public function formattedBookingData(array $result, Bookings $booking): Bookings
+    {
+        $traveler = $this->travelerRepository->find($result['traveler_id']);
+        $trip = $this->tripsRepository->find($result['trip_id']);
+        return $booking->setTravelerId($traveler)
+            ->setTripId($trip)
+            ->setBookingDate(new DateTime($result['booking_date']))
             ->setStatut($result['adresse']);
     }
 
@@ -35,16 +46,12 @@ class FormattedData
             ->setTravelHistory("travel");
     }
 
-    public function formattedTripsData(array $result, Trips $trips = null): Trips
+    public function formattedTripsData(array $result, Trips $trips): Trips
     {
-        if (!$trips) {
-            $trips = new Trips();
-        }
-
         return $trips->setDepartLocation($result['depart_location'])
             ->setArrivalLocation($result['arrival_location'])
-            ->setDepartTime($result['depart_time'])
-            ->setArrivalTime($result['arrival_time'])
+            ->setDepartTime(new DateTime($result['depart_time']))
+            ->setArrivalTime(new DateTime($result['arrival_time']))
             ->setPrice($result['price']);
     }
 

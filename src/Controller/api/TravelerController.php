@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TravelerController extends AbstractController
 {
     #[Route("/index", name: "app_api_traveler_index", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $entityManager, TravelerRepository $repository): Response
+    public function index(TravelerRepository $repository): Response
     {
         return $this->json([
             "message" => "Api travelers gare management.",

@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Entity\Trips;
 use App\Helpers\FormattedData;
 use App\Repository\TripsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,10 +16,10 @@ class TripController extends AbstractController
 
 
     #[Route("/index", name: "app_api_trip_index", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $entityManager, TripsRepository $repository): Response
+    public function index(TripsRepository $repository, FormattedData $format): Response
     {
         return $this->json([
-            "message" => "Api triprs gare management.",
+            "message" => "Api trips gare management.",
             "data" => $repository->findAll()
         ]);
     }
@@ -29,13 +28,14 @@ class TripController extends AbstractController
     public function create(Request $request, TripsRepository $repository, FormattedData $format): Response
     {
         try {
-            $trips = new trips();
-            $result = json_decode($request->getContent(), true);
-            $trips = $format->formattedTripsData($result);
-            $repository->update($trips);
 
-            $repository->save($trips);
-            return $this->json([$trips]);
+            $result = json_decode($request->getContent(), true);
+            $trips = $format->formattedTripsData($result, new trips());
+            $trips = $repository->save($trips);
+            return $this->json([
+                "message" => "Create trip with success",
+                "data" => $trips
+            ]);
         } catch (\Throwable $th) {
             return $this->json(['error' => "Error: " . $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -47,8 +47,8 @@ class TripController extends AbstractController
         try {
             $data = json_decode($request->getContent(), true);
             $trips = $format->formattedTripsData($data, $trips);
-            $repository->update($trips);
-            return $this->json($trips);
+            $trips = $repository->update($trips);
+            return $this->json(["message" => "Update trip with success", "data" => $trips]);
         } catch (\Throwable $th) {
             return $this->json(['error' => "Error: " . $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -56,21 +56,43 @@ class TripController extends AbstractController
 
 
     #[Route("/show/{id<\d+>}", name: "app_api_trips_show", methods: ["GET"])]
-    public function show(Trips $trips): Response
+    public function show(int $id, TripsRepository $repository): Response
     {
-        return $this->json([
-            "message" => "Show travel information",
-            "data" => $trips
-        ]);
+        try {
+            $trip = $repository->find($id);
+            if (!$trip) {
+                return $this->json([
+                    "message" => "Show trips not found",
+                ]);
+            }
+            return $this->json([
+                "message" => "Show trips information",
+                "data" =>   $trip
+            ]);
+        } catch (\Throwable $e) {
+            return $this->json([
+                "message" => "error $e->getMessage()",
+                "status" => "error",
+            ]);
+        }
     }
 
+
     #[Route("/remove/{id<\d+>}", name: "app_api_trips_delete", methods: ["DELETE"])]
-    public function delete(Trips $trips, TripsRepository $repository): Response
+    public function delete(int $id, TripsRepository $repository): Response
     {
-        $repository->remove($trips);
-        return $this->json([
-            "message" => "Remove sucessfully",
-            "status" => "OK",
-        ]);
+        try {
+            $trips = $repository->find($id);
+            $repository->remove($trips);
+            return $this->json([
+                "message" => "Remove sucessfully",
+                "status" => "OK",
+            ]);
+        } catch (\Throwable $th) {
+            return $this->json([
+                "message" => "Trip not found , impossible to remove",
+                "status" => "error",
+            ]);
+        }
     }
 }

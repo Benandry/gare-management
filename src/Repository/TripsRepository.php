@@ -26,6 +26,7 @@ class TripsRepository extends ServiceEntityRepository
     public function update(Trips $trips)
     {
         $this->getEntityManager()->flush();
+        return $trips;
     }
 
     public function remove(Trips $trips)
