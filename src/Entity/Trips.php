@@ -35,12 +35,14 @@ class Trips
     private ?\DateTimeInterface $arrival_time = null;
 
     #[ORM\Column]
+    #[Groups("trip:read")]
     private ?float $price = null;
 
     /**
      * @var Collection<int, Bookings>
      */
     #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'trip_id')]
+    #[Groups("trip:read")]
     private Collection $bookings;
 
     public function __construct()

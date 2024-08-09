@@ -44,6 +44,7 @@ class Traveler
      * @var Collection<int, Bookings>
      */
     #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'traveler_id', orphanRemoval: true)]
+    #[Groups("traveler:read")]
     private Collection $bookings;
 
     public function __construct()

@@ -44,7 +44,12 @@ class BookingController extends AbstractController
             $data = json_decode($request->getContent(), true);
             $booking = $format->formattedBookingData($data, $booking);
             $booking = $repository->update($booking);
-            return $this->json($booking);
+            return $this->json(
+                ["message" => "Updated bookings is successfully", "data" => $booking],
+                200,
+                ['Content-Type' => 'application/json'],
+                ['groups' => 'booking:read']
+            );
         } catch (\Throwable $th) {
             return $this->json(['error' => "Error: " . $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -57,7 +62,7 @@ class BookingController extends AbstractController
         return $this->json([
             "message" => "Show travel information",
             "data" => $booking
-        ]);
+        ], 200, ['Content-Type' => 'application/json'], ["groups" => "booking:read"]);
     }
 
     #[Route("/remove/{id<\d+>}", name: "app_api_booking_delete", methods: ["DELETE"])]

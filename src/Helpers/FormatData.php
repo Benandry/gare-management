@@ -12,9 +12,7 @@ use DateTime;
 
 class FormattedData
 {
-    public function __construct(private TravelerRepository $travelerRepository, private TripsRepository $tripsRepository)
-    {
-    }
+    public function __construct(private TravelerRepository $travelerRepository, private TripsRepository $tripsRepository) {}
 
     /**
      * formatted data for booking
@@ -29,7 +27,7 @@ class FormattedData
         return $booking->setTravelerId($traveler)
             ->setTripId($trip)
             ->setBookingDate(new DateTime($result['booking_date']))
-            ->setStatut($result['adresse']);
+            ->setStatut($result['statut']);
     }
 
     public function formattedTravelData(array $result, Traveler $traveler = null): Traveler
