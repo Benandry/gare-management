@@ -21,7 +21,7 @@ class TripController extends AbstractController
         return $this->json([
             "message" => "Api trips gare management.",
             "data" => $repository->findAll()
-        ]);
+        ], 200, ['Content-Type' => 'application/json'], ["groups" => "trip:read"]);
     }
 
     #[Route("/create", name: "app_api_trip_create", methods: ["POST"])]

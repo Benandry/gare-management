@@ -27,6 +27,7 @@ class BookingsRepository extends ServiceEntityRepository
     public function update(Bookings $bookings)
     {
         $this->getEntityManager()->flush();
+        return $bookings;
     }
 
     public function remove(Bookings $bookings)

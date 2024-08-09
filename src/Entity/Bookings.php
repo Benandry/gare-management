@@ -5,30 +5,38 @@ namespace App\Entity;
 use App\Repository\BookingsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookingsRepository::class)]
+
 class Bookings
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('booking:read')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('booking:read')]
     private ?Traveler $traveler_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('booking:read')]
     private ?\DateTimeInterface $booking_date = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('booking:read')]
     private ?string $statut = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('booking:read')]
     private ?Trips $trip_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'booking_id')]
+    #[Groups('booking:read')]
     private ?Payment $payment = null;
 
     public function getId(): ?int

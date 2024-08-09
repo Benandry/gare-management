@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment
@@ -14,21 +15,26 @@ class Payment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('payement:read')]
     private ?int $id = null;
 
     /**
      * @var Collection<int, bookings>
      */
     #[ORM\OneToMany(targetEntity: bookings::class, mappedBy: 'payment')]
+    #[Groups('payement:read')]
     private Collection $booking_id;
 
     #[ORM\Column]
+    #[Groups('payement:read')]
     private ?float $amount = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('payement:read')]
     private ?\DateTimeInterface $payment_date = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('payement:read')]
     private ?string $payment_method = null;
 
     public function __construct()

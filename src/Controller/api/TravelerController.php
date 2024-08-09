@@ -21,7 +21,7 @@ class TravelerController extends AbstractController
         return $this->json([
             "message" => "Api travelers gare management.",
             "data" => $repository->findAll()
-        ]);
+        ], 200, [], ["groups" => "traveler:read"]);
     }
 
     #[Route("/create", name: "app_api_traveler_create", methods: ["POST"])]

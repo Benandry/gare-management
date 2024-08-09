@@ -6,6 +6,7 @@ use App\Repository\TravelerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TravelerRepository::class)]
 class Traveler
@@ -13,24 +14,30 @@ class Traveler
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('traveler:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("traveler:read")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("traveler:read")]
     private ?string $lastName = null;
-
+    #[Groups("traveler:read")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("traveler:read")]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("traveler:read")]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("traveler:read")]
     private ?string $travel_history = null;
 
     /**

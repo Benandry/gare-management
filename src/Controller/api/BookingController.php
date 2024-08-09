@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 #[Route("/api/booking")]
 class BookingController extends AbstractController
@@ -20,17 +21,16 @@ class BookingController extends AbstractController
         return $this->json([
             "message" => "Api bookings gare management.",
             "data" => $repository->findAll()
-        ]);
+        ], 200, [], ['groups' => 'booking:read']);
     }
 
     #[Route("/create", name: "app_api_booking_create", methods: ["POST"])]
     public function create(Request $request, FormattedData $format, BookingsRepository $repository): Response
     {
         try {
-            $booking = new Bookings();
             $result = json_decode($request->getContent(), true);
-            $booking = $format->formattedBookingData($result);
-            $repository->save($booking);
+            $booking = $format->formattedBookingData($result, new Bookings());
+            $booking = $repository->save($booking);
             return $this->json([$booking]);
         } catch (\Throwable $th) {
             return $this->json(['error' => "Error: " . $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -43,7 +43,7 @@ class BookingController extends AbstractController
         try {
             $data = json_decode($request->getContent(), true);
             $booking = $format->formattedBookingData($data, $booking);
-            $repository->update($booking);
+            $booking = $repository->update($booking);
             return $this->json($booking);
         } catch (\Throwable $th) {
             return $this->json(['error' => "Error: " . $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
