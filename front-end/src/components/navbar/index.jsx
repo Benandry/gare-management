@@ -9,13 +9,19 @@ function Navbar() {
       </div>
       <div className="basis-1/2 flex justify-evenly items-center">
         <div>
-          <Link to="/traveler">Gestion de Voyageur</Link>
+          <Link to="/traveler" className=" font-normal">
+            Gestion de Voyageur
+          </Link>
         </div>
         <div>
-          <Link to="/booking">Réservation </Link>
+          <Link to="/booking" className=" font-normal">
+            Réservation{" "}
+          </Link>
         </div>
         <div>
-          <Link to="/trips">Gestion de Trajets</Link>
+          <Link to="/trips" className=" font-normal">
+            Gestion de Trajets
+          </Link>
         </div>
       </div>
     </nav>
