@@ -1,37 +1,37 @@
 import { useEffect, useState } from "react";
+import getData from "../../fetchData/getData";
 import { Link } from "react-router-dom";
-import Button from "../../components/Button";
 
 function Traveler() {
   const [travelers, setTravelers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function getTravelersFromApi() {
+  const fetchData = async () => {
     setIsLoading(true);
-    const apiTravelerResponses = await fetch(
-      "https://127.0.0.1:8001/api/traveler/index",
-      {
-        method: "GET",
-      }
-    );
-    const result = await apiTravelerResponses.json();
+    const { result, loading } = await getData("traveler/index");
     setTravelers(result?.data);
     setIsLoading(false);
-  }
+  };
 
   useEffect(() => {
-    getTravelersFromApi();
+    fetchData();
   }, []);
+
   if (isLoading) {
     return <h2 className="text-center text-gray-700"> LOADING...</h2>;
   }
   return (
-    <div>
+    <div className="m-6">
       <h3 className=" m-4 text-center text-gray-700 font-semibold text-3xl">
         Liste des Voyageurs
       </h3>
       <div className="flex m-4 justify-end item-center">
-        <Button to="/traveler/create" label="Créer un nouveau" />
+        <Link
+          to="/traveler/create"
+          className="py-2 px-4 rounded-md text-white bg-blue-600"
+        >
+          Créer un nouveau
+        </Link>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -51,6 +51,9 @@ function Traveler() {
               </th>
               <th scope="col" className="px-6 py-3">
                 Adresse
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
               </th>
             </tr>
           </thead>
@@ -76,6 +79,30 @@ function Traveler() {
                   <td scope="col" className="px-6 py-3">
                     {" "}
                     {traveler.adresse}
+                  </td>
+                  <td scope="col" className="px-6 py-3">
+                    <div className="flex justify-center gap-2 item-center">
+                      <Link
+                        to={`/traveler/show/${traveler.id}`}
+                        className="py-2 px-4 rounded-md text-white bg-green-600"
+                      >
+                        Detail
+                      </Link>
+
+                      <Link
+                        to={`/traveler/edit${traveler.id}`}
+                        className="py-2 px-4 rounded-md text-white bg-blue-300"
+                      >
+                        Modifier
+                      </Link>
+
+                      <Link
+                        to={`/traveler/delete/${traveler.id}`}
+                        className="py-2 px-4 rounded-md text-white bg-red-600"
+                      >
+                        Supprimer
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               );
