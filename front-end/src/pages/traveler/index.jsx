@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import getData from "../../fetchData/getData";
 import { Link } from "react-router-dom";
+import { getData } from "../../fetchData/fetchFromApi";
 
 function Traveler() {
   const [travelers, setTravelers] = useState([]);
@@ -8,7 +8,7 @@ function Traveler() {
 
   const fetchData = async () => {
     setIsLoading(true);
-    const { result, loading } = await getData("traveler/index");
+    const { result } = await getData("traveler/index");
     setTravelers(result?.data);
     setIsLoading(false);
   };
@@ -90,7 +90,7 @@ function Traveler() {
                       </Link>
 
                       <Link
-                        to={`/traveler/edit${traveler.id}`}
+                        to={`/traveler/edit/${traveler.id}`}
                         className="py-2 px-4 rounded-md text-white bg-blue-300"
                       >
                         Modifier

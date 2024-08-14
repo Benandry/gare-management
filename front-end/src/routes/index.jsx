@@ -7,6 +7,8 @@ import Trip from "../pages/trips";
 import Traveler from "../pages/traveler";
 import Create from "../pages/traveler/create";
 import ShowTraveler from "../pages/traveler/show";
+import UpdateTraveler from "../pages/traveler/update";
+import DeleteTraveler from "../pages/traveler/delete";
 
 function AppRoutes() {
   return (
@@ -18,6 +20,8 @@ function AppRoutes() {
         <Route path="" element={<Traveler />} />
         <Route path="create" element={<Create />} />
         <Route path="show/:id" element={<ShowTraveler />} />
+        <Route path="edit/:id" element={<UpdateTraveler />} />
+        <Route path="delete/:id" element={<DeleteTraveler />} />
       </Route>
 
       <Route path="/trips" element={<Trip />} />

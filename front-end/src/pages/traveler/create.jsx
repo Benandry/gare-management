@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { useNavigate } from "react-router-dom";
+import { postData } from "../../fetchData/fetchFromApi";
 
 function Create() {
   const [message, setMessage] = useState("");
@@ -17,28 +18,15 @@ function Create() {
   const navigate = useNavigate("");
 
   const postTravelerData = async (travelerData) => {
-    const response = await fetch("https://127.0.0.1:8001/api/traveler/create", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify(travelerData),
-    });
-
-    const result = await response.json();
-    console.log(result);
-    return result;
+    const { result } = await postData("traveler/create", travelerData);
+    setTravelerData(result?.data);
+    setMessage(result?.message);
+    navigate("/traveler");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const response = postTravelerData(travelerData);
-    setMessage(response?.message);
-    navigate("/traveler");
+    postTravelerData(travelerData);
   };
   const handleChange = (e) => {
     setTravelerData({ ...travelerData, [e.target.name]: e.target.value });
