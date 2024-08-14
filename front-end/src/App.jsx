@@ -8,8 +8,9 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      {/* <Sidebar  /> */}
-      <AppRoutes />
+      <Sidebar>
+        <AppRoutes />
+      </Sidebar>
     </BrowserRouter>
   );
 }

@@ -1,9 +1,18 @@
-function Input({ label, type, id, placeholder, value, handleChange }) {
+function Input({
+  label,
+  type,
+  id,
+  placeholder,
+  value,
+  handleChange,
+  required,
+}) {
   return (
     <div className="mb-5">
       <label
         htmlFor={id}
         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        required={required}
       >
         {label} :
       </label>

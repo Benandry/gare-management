@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getData } from "../../fetchData/fetchFromApi";
 
 function ShowTraveler() {
@@ -45,6 +45,9 @@ function ShowTraveler() {
         <p className="text-gray-700 mb-4">
           <strong>Historique de voyage:</strong> {traveler?.travelHistory}
         </p>
+        <div className="m-2">
+          <Link to="/traveler">Listes des voyageurs</Link>
+        </div>
       </div>
     </div>
   );

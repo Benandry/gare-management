@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import { getData, updateData } from "../../fetchData/fetchFromApi";
+import FormTraveler from "./form";
 
 function UpdateTraveler() {
   const { id } = useParams();
@@ -36,58 +37,17 @@ function UpdateTraveler() {
     setTraveler({ ...traveler, [e.target.name]: e.target.value });
   };
   return (
-    <form className="max-w-lg mx-auto mb-5" onSubmit={handleSubmit}>
-      <Input
+    <div>
+      <h3 className=" m-4 text-center text-gray-700 font-semibold text-3xl">
+        Insertion de voyageur
+      </h3>
+      <FormTraveler
+        textButton="Enregistrer"
         handleChange={handleChange}
-        value={traveler?.firstName}
-        id="firstName"
-        label="Nom du voyageur"
-        placeholder="Entrer le nom du voyageur"
-        type="text"
+        handleSubmit={handleSubmit}
+        travelerData={traveler}
       />
-      <Input
-        handleChange={handleChange}
-        value={traveler?.lastName}
-        id="lastName"
-        label="Prénom du voyageur"
-        placeholder="Entrer le prénom du voyageur"
-        type="text"
-      />
-      <Input
-        handleChange={handleChange}
-        value={traveler?.email}
-        id="email"
-        label="Email"
-        placeholder="Entre le email du voyageur"
-        type="email"
-      />
-      <Input
-        handleChange={handleChange}
-        value={traveler?.phone}
-        id="phone"
-        label="Numero de téléphone"
-        placeholder="Entrer le numéro de téléphone"
-        type="phone"
-      />
-      <Input
-        handleChange={handleChange}
-        value={traveler?.adresse}
-        id="adresse"
-        label="Adresse"
-        placeholder="Entrer l'adresse complete numéro de téléphone"
-        type="text"
-      />
-
-      <Input
-        handleChange={handleChange}
-        value={traveler?.travel_story}
-        id="travel_story"
-        label="Deja voyager"
-        placeholder=".."
-        type="text"
-      />
-      <Button type="submit" label="Modifier" color="blue" />
-    </form>
+    </div>
   );
 }
 
