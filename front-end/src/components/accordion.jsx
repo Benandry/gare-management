@@ -8,7 +8,7 @@ const AccordionItem = ({ title, children }) => {
   };
 
   return (
-    <div className="">
+    <div className="mb-4">
       <button
         className="w-full text-left  flex justify-between focus:outline-none text-gray-700"
         onClick={toggleAccordion}
