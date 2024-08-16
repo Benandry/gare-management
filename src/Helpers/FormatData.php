@@ -3,23 +3,24 @@
 namespace App\Helpers;
 
 use App\Entity\Bookings;
+use App\Entity\Car;
+use App\Entity\Driver;
 use App\Entity\Payment;
 use App\Entity\Traveler;
 use App\Entity\Trips;
+use App\Repository\DriverRepository;
 use App\Repository\TravelerRepository;
 use App\Repository\TripsRepository;
 use DateTime;
 
-class FormattedData
+class FormatData
 {
-    public function __construct(private TravelerRepository $travelerRepository, private TripsRepository $tripsRepository) {}
+    public function __construct(
+        private TravelerRepository $travelerRepository,
+        private TripsRepository $tripsRepository,
+        private DriverRepository $driverRepository
+    ) {}
 
-    /**
-     * formatted data for booking
-     * @param array $result
-     * @param \App\Entity\Bookings $booking
-     * @return \App\Entity\Bookings
-     */
     public function formattedBookingData(array $result, Bookings $booking): Bookings
     {
         $traveler = $this->travelerRepository->find($result['traveler_id']);
@@ -30,18 +31,33 @@ class FormattedData
             ->setStatut($result['statut']);
     }
 
-    public function formattedTravelData(array $result, Traveler $traveler = null): Traveler
+    public function formattedTravelData(array $result, Traveler $traveler): Traveler
     {
-        if (!$traveler) {
-            $traveler = new Traveler();
-        }
-
         return $traveler->setFirstName($result['firstName'])
             ->setLastName($result['lastName'])
             ->setEmail($result['email'])
             ->setPhone($result['phone'])
             ->setAdresse($result['adresse'])
-            ->setTravelHistory("travel");
+            ->setTravelHistory("travel_story");
+    }
+
+    public function formatCarData(array $result, Car $car): Car
+    {
+        $driver = $this->driverRepository->find($result['driver']);
+        return $car->setName($result['name'])
+            ->setMarks($result['marks'])
+            ->setNumber($result['number'])
+            ->setNumberOfPlace($result['number_of_place'])
+            ->setType($result['type'])
+            ->setDriver($driver);
+    }
+
+    public function formatDriverData(array $result, Driver $driver): Driver
+    {
+        return $driver->setName($result["name"])
+            ->setLastName($result["lastName"])
+            ->setPhone($result["phone"])
+            ->setPermis($result["permis"]);
     }
 
     public function formattedTripsData(array $result, Trips $trips): Trips
