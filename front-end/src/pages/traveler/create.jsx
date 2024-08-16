@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { postData } from "../../fetchData/fetchFromApi";
 import FormTraveler from "./form";
 

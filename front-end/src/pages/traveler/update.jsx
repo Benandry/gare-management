@@ -42,7 +42,7 @@ function UpdateTraveler() {
         Insertion de voyageur
       </h3>
       <FormTraveler
-        textButton="Enregistrer"
+        textButton="Modifier"
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         travelerData={traveler}

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getData } from "../../fetchData/fetchFromApi";
-import Pagination from "../../components/pagination";
 
 function Traveler() {
   const [travelers, setTravelers] = useState([]);
@@ -111,7 +110,7 @@ function Traveler() {
             })}
           </tbody>
         </table>
-        <Pagination currentPage={} nextPage={} totalPages={} />
+        {/* <Pagination currentPage={} nextPage={} totalPages={} /> */}
       </div>
     </div>
   );
