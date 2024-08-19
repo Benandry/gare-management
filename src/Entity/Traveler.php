@@ -36,16 +36,16 @@ class Traveler
     #[Groups("traveler:read")]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups("traveler:read")]
-    private ?string $travel_history = null;
-
     /**
      * @var Collection<int, Bookings>
      */
     #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'traveler_id', orphanRemoval: true)]
     #[Groups("traveler:read")]
     private Collection $bookings;
+
+    #[ORM\ManyToOne(inversedBy: 'travelers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Car $car = null;
 
     public function __construct()
     {
@@ -116,18 +116,6 @@ class Traveler
         return $this;
     }
 
-    public function getTravelHistory(): ?string
-    {
-        return $this->travel_history;
-    }
-
-    public function setTravelHistory(?string $travel_history): static
-    {
-        $this->travel_history = $travel_history;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Bookings>
      */
@@ -154,6 +142,18 @@ class Traveler
                 $booking->setTravelerId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): static
+    {
+        $this->car = $car;
 
         return $this;
     }

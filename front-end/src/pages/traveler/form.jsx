@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import Select from "../../components/Select";
+import { useEffect, useState } from "react";
+import { getData } from "../../fetchData/fetchFromApi";
 
 function FormTraveler({
   travelerData,
@@ -8,6 +11,23 @@ function FormTraveler({
   handleSubmit,
   textButton,
 }) {
+  const [cars, setCars] = useState([{}]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const { result } = await getData("settings/car/index");
+    setCars(result?.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <h2 className="text-center text-gray-700"> LOADING...</h2>;
+  }
   return (
     <form className=" " onSubmit={handleSubmit}>
       <div className="flex justify-center gap-4">
@@ -59,15 +79,12 @@ function FormTraveler({
             type="text"
             required={true}
           />
-
-          <Input
+          <Select
             handleChange={handleChange}
-            value={travelerData?.travel_story}
-            id="travel_story"
-            label="Deja voyager"
-            placeholder=".."
-            type="text"
-            required={true}
+            value={travelerData?.car_id}
+            id="car_id"
+            label="Taxi-brousse"
+            options={cars}
           />
         </div>
       </div>

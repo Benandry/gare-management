@@ -34,6 +34,18 @@ class CarRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function findAllWithDriver(int $limit = 10, int $offset = 0)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.driver', 'd') // Joins the Driver entity
+            ->addSelect('d')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getResult();
+    }
+
     //    /**
     //     * @return Car[] Returns an array of Car objects
     //     */

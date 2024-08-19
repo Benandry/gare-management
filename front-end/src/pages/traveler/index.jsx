@@ -9,7 +9,6 @@ function Traveler() {
   const fetchData = async () => {
     setIsLoading(true);
     const { result } = await getData("traveler/index");
-    console.log(result);
     setTravelers(result?.data);
     setIsLoading(false);
   };

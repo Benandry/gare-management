@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/api/settings/car")]
 class CarController extends AbstractController
 {
-
     #[Route("/index", name: "app_api_index_car", methods: ["GET", "POST"])]
     public function index(
         Request $request,
@@ -22,10 +21,10 @@ class CarController extends AbstractController
         FormatJsonApi $formatJson
     ): Response {
         $result = $formatJson->formatJson($request, $repository);
+        $result["data"] = $repository->findAllWithDriver();
         $result["message"] = "Api cars gare management.";
         return $this->json($result, 200, [], ["groups" => "car:read"]);
     }
-
     #[Route("/create", name: "app_api_car_create", methods: ["POST"])]
     public function create(Request $request, CarRepository $repository, FormatData $format): Response
     {

@@ -8,6 +8,7 @@ use App\Entity\Driver;
 use App\Entity\Payment;
 use App\Entity\Traveler;
 use App\Entity\Trips;
+use App\Repository\CarRepository;
 use App\Repository\DriverRepository;
 use App\Repository\TravelerRepository;
 use App\Repository\TripsRepository;
@@ -18,7 +19,8 @@ class FormatData
     public function __construct(
         private TravelerRepository $travelerRepository,
         private TripsRepository $tripsRepository,
-        private DriverRepository $driverRepository
+        private DriverRepository $driverRepository,
+        private CarRepository $carRepository,
     ) {}
 
     public function formattedBookingData(array $result, Bookings $booking): Bookings
@@ -33,12 +35,13 @@ class FormatData
 
     public function formattedTravelData(array $result, Traveler $traveler): Traveler
     {
+        $car = $this->carRepository->find($result['car_id']);
         return $traveler->setFirstName($result['firstName'])
             ->setLastName($result['lastName'])
             ->setEmail($result['email'])
             ->setPhone($result['phone'])
             ->setAdresse($result['adresse'])
-            ->setTravelHistory("travel_story");
+            ->setCar($car);
     }
 
     public function formatCarData(array $result, Car $car): Car

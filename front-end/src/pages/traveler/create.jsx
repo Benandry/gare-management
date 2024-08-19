@@ -11,7 +11,7 @@ function Create() {
     email: "",
     phone: "",
     adresse: "",
-    travel_story: "",
+    car_id: "",
   });
 
   const navigate = useNavigate("");
